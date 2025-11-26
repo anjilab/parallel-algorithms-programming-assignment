@@ -1,0 +1,13 @@
+# C / C++ compiled files
+*.o
+*.obj
+*.exe
+*.out
+*.a
+*.so
+*.dylib
+test
+kmeans_omp
+kmeans_serial
+kmeans_mpi
+test_mpi
