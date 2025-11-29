@@ -11,3 +11,8 @@ kmeans_omp
 kmeans_serial
 kmeans_mpi
 test_mpi
+graph_generator
+graph
+dijkstra_serial_graph
+djikstra_serial
+djikstra_serial_graph
