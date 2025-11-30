@@ -13,3 +13,6 @@
 - `which mpicc`
 - ` mpicc test.c -o test_mpi -lm `
 - `mpirun -np 4 ./test_mpi`
+
+
+# How to run a code

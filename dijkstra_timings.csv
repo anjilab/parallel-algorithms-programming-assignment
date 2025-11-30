@@ -1,28 +1,49 @@
-nodes,edges,max_weight,threads,parallel_time,serial_time
-1000,5000,10,1,.004827555,.004270708
-1000,5000,10,8,.009105418,.003962146
-1000,5000,10,16,.013930548,.003614933
-1000,25000,10,1,.009898619,.007915737
-1000,25000,10,8,.014422154,.007635130
-1000,25000,10,16,.017845014,.007426306
-1000,50000,10,1,.014536979,.013453921
-1000,50000,10,8,.019246914,.013599946
-1000,50000,10,16,.024524406,.012663593
-5000,5000,10,1,.027092439,.025073148
-5000,5000,10,8,.027680857,.025264678
-5000,5000,10,16,.043546185,.025438356
-5000,25000,10,1,.036174211,.034515669
-5000,25000,10,8,.038109435,.034899302
-5000,25000,10,16,.061079655,.034913869
-5000,50000,10,1,.042225531,.040763568
-5000,50000,10,8,.045319002,.039890305
-5000,50000,10,16,.068810544,.042099523
-10000,5000,10,1,.003701827,.003249776
-10000,5000,10,8,.003568846,.003243253
-10000,5000,10,16,.004051946,.003432640
-10000,25000,10,1,.129464717,.122881817
-10000,25000,10,8,.092285907,.124460038
-10000,25000,10,16,.115250465,.123781311
-10000,50000,10,1,.131087590,.131859153
-10000,50000,10,8,.083901707,.130265615
-10000,50000,10,16,.126139519,.131001280
+nodes,edges,max_weight,threads,parallel_time,serial_time,speedup,conclusion
+1000,5000,10,1,0.0046,0.0038,0.8261,Parallel version is slower (speedup < 1)
+1000,5000,10,8,0.0090,0.0037,0.4111,Parallel version is slower (speedup < 1)
+1000,5000,10,16,0.0134,0.0039,0.2910,Parallel version is slower (speedup < 1)
+1000,25000,10,1,0.0090,0.0074,0.8222,Parallel version is slower (speedup < 1)
+1000,25000,10,8,0.0143,0.0077,0.5385,Parallel version is slower (speedup < 1)
+1000,25000,10,16,0.0178,0.0077,0.4326,Parallel version is slower (speedup < 1)
+1000,50000,10,1,0.0145,0.0133,0.9172,Parallel version is slower (speedup < 1)
+1000,50000,10,8,0.0187,0.0127,0.6791,Parallel version is slower (speedup < 1)
+1000,50000,10,16,0.0245,0.0126,0.5143,Parallel version is slower (speedup < 1)
+1000,75000,10,1,0.0201,0.0168,0.8358,Parallel version is slower (speedup < 1)
+1000,75000,10,8,0.0246,0.0177,0.7195,Parallel version is slower (speedup < 1)
+1000,75000,10,16,0.0302,0.0177,0.5861,Parallel version is slower (speedup < 1)
+5000,5000,10,1,0.0031,0.0031,1.0000,Same performance (speedup = 1)
+5000,5000,10,8,0.0032,0.0031,0.9688,Parallel version is slower (speedup < 1)
+5000,5000,10,16,0.0038,0.0028,0.7368,Parallel version is slower (speedup < 1)
+5000,25000,10,1,0.0358,0.0335,0.9358,Parallel version is slower (speedup < 1)
+5000,25000,10,8,0.0370,0.0335,0.9054,Parallel version is slower (speedup < 1)
+5000,25000,10,16,0.0593,0.0338,0.5700,Parallel version is slower (speedup < 1)
+5000,50000,10,1,0.0419,0.0388,0.9260,Parallel version is slower (speedup < 1)
+5000,50000,10,8,0.0439,0.0383,0.8724,Parallel version is slower (speedup < 1)
+5000,50000,10,16,0.0663,0.0389,0.5867,Parallel version is slower (speedup < 1)
+5000,75000,10,1,0.0475,0.0447,0.9411,Parallel version is slower (speedup < 1)
+5000,75000,10,8,0.0525,0.0438,0.8343,Parallel version is slower (speedup < 1)
+5000,75000,10,16,0.0708,0.0433,0.6116,Parallel version is slower (speedup < 1)
+10000,5000,10,1,0.0042,0.0038,0.9048,Parallel version is slower (speedup < 1)
+10000,5000,10,8,0.0040,0.0041,1.0250,Parallel version is faster (speedup > 1)
+10000,5000,10,16,0.0045,0.0037,0.8222,Parallel version is slower (speedup < 1)
+10000,25000,10,1,0.1199,0.1216,1.0142,Parallel version is faster (speedup > 1)
+10000,25000,10,8,0.0741,0.1224,1.6518,Parallel version is faster (speedup > 1)
+10000,25000,10,16,0.1139,0.1217,1.0685,Parallel version is faster (speedup > 1)
+10000,50000,10,1,0.1273,0.1284,1.0086,Parallel version is faster (speedup > 1)
+10000,50000,10,8,0.0830,0.1288,1.5518,Parallel version is faster (speedup > 1)
+10000,50000,10,16,0.1234,0.1280,1.0373,Parallel version is faster (speedup > 1)
+10000,75000,10,1,0.1357,0.1370,1.0096,Parallel version is faster (speedup > 1)
+10000,75000,10,8,0.0906,0.1328,1.4658,Parallel version is faster (speedup > 1)
+10000,75000,10,16,0.1305,0.1387,1.0628,Parallel version is faster (speedup > 1)
+15000,5000,10,1,0.0039,0.0037,0.9487,Parallel version is slower (speedup < 1)
+15000,5000,10,8,0.0040,0.0038,0.9500,Parallel version is slower (speedup < 1)
+15000,5000,10,16,0.0044,0.0036,0.8182,Parallel version is slower (speedup < 1)
+15000,25000,10,1,0.2905,0.3069,1.0565,Parallel version is faster (speedup > 1)
+15000,25000,10,8,0.1148,0.3030,2.6394,Parallel version is faster (speedup > 1)
+15000,25000,10,16,0.1709,0.3030,1.7730,Parallel version is faster (speedup > 1)
+15000,50000,10,1,0.3046,0.3148,1.0335,Parallel version is faster (speedup > 1)
+15000,50000,10,8,0.1233,0.3152,2.5564,Parallel version is faster (speedup > 1)
+15000,50000,10,16,0.1863,0.3139,1.6849,Parallel version is faster (speedup > 1)
+15000,75000,10,1,0.3139,0.3249,1.0350,Parallel version is faster (speedup > 1)
+15000,75000,10,8,0.1319,0.3213,2.4359,Parallel version is faster (speedup > 1)
+15000,75000,10,16,0.1923,0.3183,1.6552,Parallel version is faster (speedup > 1)

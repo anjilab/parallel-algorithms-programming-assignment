@@ -137,7 +137,7 @@ void dijkstra_serial(Graph* graph, int src) {
 
 
 int main(int argc, char *argv[]) {
-    const char *filename = "test_graph";
+    const char *filename = "weighted_graph.txt";
     
     // this is handling error when user do not provide source node.
     if (argc != 2) {

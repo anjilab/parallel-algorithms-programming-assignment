@@ -43,6 +43,7 @@ Graph* create_graph(int num_nodes) {
 }
 
 void add_edge(Graph* graph, int u, int v, int w) {
+    // Undirected graph: add edge (u -> v) and (v -> u)
     Edge* new_u_v = create_edge(v, w);
     new_u_v->next = graph->adj_list[u];
     graph->adj_list[u] = new_u_v;
@@ -53,25 +54,30 @@ void add_edge(Graph* graph, int u, int v, int w) {
 }
 
 
+// --- 1. PARALLEL: Finding the Minimum Distance Node ---
 int min_distance_parallel(int dist[], bool visited[], int num_nodes) {
     int min_val = INT_MAX;
     int min_index = -1;
 
+    // Parallel region for searching the minimum distance node
     #pragma omp parallel default(none) shared(dist, visited, num_nodes, min_val, min_index)
     {
         int local_min_val = INT_MAX;
         int local_min_index = -1;
 
         // Loop over all nodes (each thread searches its own chunk)
+        // Schedule 'static' or 'dynamic' can be used here. 'Static' is fine for this uniform work.
         #pragma omp for schedule(static)
         for (int v = 0; v < num_nodes; v++) {
+            // Find the minimum distance node that has not been visited
             if (visited[v] == false && dist[v] < local_min_val) {
                 local_min_val = dist[v];
                 local_min_index = v;
             }
         }
 
-        // This should be done for the communication and synchronization.
+        // Combine the local results into the global minimum using a critical section.
+        // This is necessary because min_val and min_index are shared variables.
         #pragma omp critical
         {
             if (local_min_val < min_val) {
@@ -85,7 +91,6 @@ int min_distance_parallel(int dist[], bool visited[], int num_nodes) {
 
 
 void dijkstra_openmp(Graph* graph, int src) {
-    // Start: Same as serial working on allocating the distance from source node to others. e.t.c
     int num_nodes = graph->num_nodes;
     int *dist = (int*)malloc(num_nodes * sizeof(int));
     bool *visited = (bool*)malloc(num_nodes * sizeof(bool));
@@ -95,9 +100,8 @@ void dijkstra_openmp(Graph* graph, int src) {
         perror("Memory allocation failed for Dijkstra arrays");
         exit(EXIT_FAILURE);
     }
-    // END
 
-    // OpenMP parallelization loop for initial setup.  
+    // Parallel loop for initial setup
     #pragma omp parallel for schedule(static)
     for (int i = 0; i < num_nodes; i++) {
         dist[i] = INT_MAX;
@@ -105,10 +109,11 @@ void dijkstra_openmp(Graph* graph, int src) {
         parent[i] = -1;
     }
 
-    dist[src] = 0; // Cost from the source set to 0
+    dist[src] = 0;
 
-    // Outer loop we cannot parallize so same as serial
+    // Outer loop we cannot parallize so works sequentially
     for (int count = 0; count < num_nodes - 1; count++) {
+        // 1. Minimum distance selection (Parallelized step)
         int u = min_distance_parallel(dist, visited, num_nodes);
 
         if (u == -1 || dist[u] == INT_MAX) {
@@ -117,6 +122,7 @@ void dijkstra_openmp(Graph* graph, int src) {
 
         visited[u] = true;
 
+        // 2. Neighbor distance update 
     
         int neighbor_count = 0;
         Edge* current_edge_count = graph->adj_list[u];
@@ -125,6 +131,7 @@ void dijkstra_openmp(Graph* graph, int src) {
             current_edge_count = current_edge_count->next;
         }
 
+        // Allocate temporary arrays to hold neighbors and weights
         int *neighbors = (int*)malloc(neighbor_count * sizeof(int));
         int *weights = (int*)malloc(neighbor_count * sizeof(int));
         
@@ -135,12 +142,13 @@ void dijkstra_openmp(Graph* graph, int src) {
             current_edge = current_edge->next;
         }
 
-        // Parallelization of OpenMP for the neighbor nodes to track nodes for the shortest path
+        // Parallel loop over the neighbors of selected node
         #pragma omp parallel for default(none) shared(dist, visited, parent, u, neighbors, weights, neighbor_count) schedule(static)
         for (int i = 0; i < neighbor_count; i++) {
             int v = neighbors[i];
             int weight = weights[i];
 
+            // Relaxation check: This is safe as each thread updates a unique dist[v]
             if (!visited[v] && dist[u] != INT_MAX) {
                 int new_dist = dist[u] + weight;
                 if (new_dist < dist[v]) {
@@ -176,7 +184,6 @@ int main(int argc, char *argv[]) {
     // Reading from the command `./graph_generator 10000 50000 100 weighted_graph.txt`
     const char *filename = "weighted_graph.txt"; 
     
-    // Start: This is same for both serial and openmp for error handling like when source node not provided.
     if (argc != 2) {
         fprintf(stderr, "Usage: %s <source_node>\n", argv[0]);
         fprintf(stderr, "The program automatically reads graph data from '%s'.\n", filename);
@@ -224,8 +231,7 @@ int main(int argc, char *argv[]) {
     fclose(file);
 
     printf("Successfully loaded graph with %d nodes and %d edges from '%s'.\n", num_nodes, num_edges, filename);
-    // End: Till here  Parallel and Serial same code.
-    printf("Running OpenMP Dijkstra's with %d threads.\n", omp_get_max_threads()); // Get the number of threads for shared memory
+    printf("Running OpenMP Dijkstra's with %d threads.\n", omp_get_max_threads());
     
     
     struct timeval start, end;
